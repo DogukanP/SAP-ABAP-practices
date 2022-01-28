@@ -64,18 +64,55 @@ ENDFORM.
 *& <--  p2        text
 *&---------------------------------------------------------------------*
 FORM get_data .
+  DATA : lv_numc   TYPE n LENGTH 8,
+         lv_numc_c TYPE char8.
+*         lv_tabix type i.
+
   SELECT * FROM scarr INTO CORRESPONDING FIELDS OF TABLE gt_scarr.
 
-    LOOP AT GT_SCARR ASSIGNING <GFS_SCARR>.
-      CASE <GFS_SCARR>-CURRCODE.
-        WHEN 'USD'.
-          <GFS_SCARR>-dd_handle = 3.
-        WHEN 'JPY'.
-          <GFS_SCARR>-dd_handle = 4.
-        WHEN OTHERS.
-          <GFS_SCARR>-dd_handle = 5.
-      ENDCASE.
-    ENDLOOP.
+  LOOP AT gt_scarr ASSIGNING <gfs_scarr>.
+
+*    lv_tabix = lv_tabix + 1.
+
+    lv_numc = lv_numc + 1.
+    lv_numc_c = lv_numc.
+
+
+    CASE <gfs_scarr>-currcode.
+      WHEN 'USD'.
+        <gfs_scarr>-dd_handle = 3.
+      WHEN 'JPY'.
+        <gfs_scarr>-dd_handle = 4.
+      WHEN OTHERS.
+        <gfs_scarr>-dd_handle = 5.
+    ENDCASE.
+
+*    IF <gfs_scarr>-currcode NE 'USD'.
+*      CLEAR : gs_cellstyle.
+*      gs_cellstyle-fieldname = 'URL'.
+*      gs_cellstyle-style = cl_gui_alv_grid=>mc_style_disabled.
+*      APPEND gs_cellstyle TO <gfs_scarr>-cellstyle.
+*    ENDIF.
+
+*    CASE lv_tabix.
+*      WHEN 1.
+*        gs_cellstyle-fieldname = 'URL'.
+*        gs_cellstyle-style = '00000000'.
+*        APPEND gs_cellstyle TO <gfs_scarr>-cellstyle.
+*      WHEN 2.
+*        gs_cellstyle-fieldname = 'URL'.
+*        gs_cellstyle-style = '00000001'.
+*        APPEND gs_cellstyle TO <gfs_scarr>-cellstyle.
+*      WHEN 3.
+*        gs_cellstyle-fieldname = 'URL'.
+*        gs_cellstyle-style = '00000002'.
+*        APPEND gs_cellstyle TO <gfs_scarr>-cellstyle.
+*    ENDCASE.
+
+    gs_cellstyle-fieldname = 'URL'.
+    gs_cellstyle-style = lv_numc_c.
+    APPEND gs_cellstyle TO <gfs_scarr>-cellstyle.
+  ENDLOOP.
 ENDFORM.
 
 
@@ -159,6 +196,7 @@ FORM set_layout .
 *  gs_layout-edit = 'X'.
   gs_layout-no_toolbar = 'X'.
 *  gs_layout-zebra = 'X'.
+  gs_layout-stylefname = 'CELLSTYLE'.
 ENDFORM.
 *&---------------------------------------------------------------------*
 *& Form GET_TOTAL

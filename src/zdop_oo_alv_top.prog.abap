@@ -21,9 +21,11 @@ TYPES : BEGIN OF gty_scarr,
           seatt     TYPE char20,
           seatp     TYPE char10,
           dd_handle TYPE int4,
+          cellstyle TYPE lvc_t_styl,
         END OF gty_scarr.
 
-DATA : gs_cell_color TYPE lvc_s_scol.
+DATA : gs_cell_color TYPE lvc_s_scol,
+       gs_cellstyle TYPE lvc_s_styl.
 
 DATA : go_alv  TYPE REF TO cl_gui_alv_grid,
        go_cont TYPE REF TO cl_gui_custom_container.
