@@ -2,7 +2,7 @@
 *& Include          ZDOP_OO_ALV_TOP
 *&---------------------------------------------------------------------*
 TABLES : scarr.
-
+TYPE-POOLS icon.
 *DATA :BEGIN OF gt_scarr OCCURS 0,
 *        carrid   TYPE SCARR-carrid   ,
 *        carrname TYPE SCARR-carrname ,
@@ -11,6 +11,7 @@ TABLES : scarr.
 *      END OF gt_scarr.
 
 TYPES : BEGIN OF gty_scarr,
+          durum    TYPE icon_d,
           carrid   TYPE s_carr_id,
           carrname TYPE s_carrname,
           currcode TYPE s_curRcode,
