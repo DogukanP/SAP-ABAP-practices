@@ -23,6 +23,8 @@ FORM show_alv .
       EXPORTING
         i_parent = go_cont.
 
+    PERFORM set_dropdown.
+
     CALL METHOD go_alv->set_table_for_first_display
       EXPORTING
 *       i_structure_name              = 'SCARR'            " Internal Output Table Structure Name
@@ -63,6 +65,17 @@ ENDFORM.
 *&---------------------------------------------------------------------*
 FORM get_data .
   SELECT * FROM scarr INTO CORRESPONDING FIELDS OF TABLE gt_scarr.
+
+    LOOP AT GT_SCARR ASSIGNING <GFS_SCARR>.
+      CASE <GFS_SCARR>-CURRCODE.
+        WHEN 'USD'.
+          <GFS_SCARR>-dd_handle = 3.
+        WHEN 'JPY'.
+          <GFS_SCARR>-dd_handle = 4.
+        WHEN OTHERS.
+          <GFS_SCARR>-dd_handle = 5.
+      ENDCASE.
+    ENDLOOP.
 ENDFORM.
 
 
@@ -109,6 +122,27 @@ FORM set_fcat .
   CLEAR : gs_fcat.
   gs_fcat-fieldname = 'DURUM'.
   gs_fcat-scrtext_m = 'DURUM'.
+  APPEND gs_fcat TO gt_fcat.
+
+  CLEAR : gs_fcat.
+  gs_fcat-fieldname = 'LOCATION'.
+  gs_fcat-scrtext_m = 'LOCATION'.
+  gs_fcat-edit = abap_true.
+  gs_fcat-drdn_hndl = 1.
+  APPEND gs_fcat TO gt_fcat.
+
+  CLEAR : gs_fcat.
+  gs_fcat-fieldname = 'SEATT'.
+  gs_fcat-scrtext_m = 'BÖLÜM'.
+  gs_fcat-edit = abap_true.
+  gs_fcat-drdn_hndl = 2.
+  APPEND gs_fcat TO gt_fcat.
+
+  CLEAR : gs_fcat.
+  gs_fcat-fieldname = 'SEATP'.
+  gs_fcat-scrtext_m = 'KOLTUK POZİSYONU'.
+  gs_fcat-edit = abap_true.
+  gs_fcat-drdn_field = 'DD_HANDLE'.
   APPEND gs_fcat TO gt_fcat.
 ENDFORM.
 *&---------------------------------------------------------------------*
@@ -158,4 +192,77 @@ FORM get_total .
   ENDLOOP.
 
 
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form SET_DROPDOWN
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_dropdown .
+  DATA : lt_dropdown TYPE lvc_t_drop,
+         ls_dropdown TYPE lvc_s_drop.
+
+  CLEAR : ls_dropdown.
+  ls_dropdown-handle = 1.
+  ls_dropdown-value = 'YURTİÇİ'.
+  APPEND ls_dropdown TO lt_dropdown.
+
+  CLEAR : ls_dropdown.
+  ls_dropdown-handle = 1.
+  ls_dropdown-value = 'YURTDIŞI'.
+  APPEND ls_dropdown TO lt_dropdown.
+
+  CLEAR : ls_dropdown.
+  ls_dropdown-handle = 2.
+  ls_dropdown-value = 'ECONOMY'.
+  APPEND ls_dropdown TO lt_dropdown.
+
+  CLEAR : ls_dropdown.
+  ls_dropdown-handle = 2.
+  ls_dropdown-value = 'BUSINESS'.
+  APPEND ls_dropdown TO lt_dropdown.
+
+  CLEAR : ls_dropdown.
+  ls_dropdown-handle = 2.
+  ls_dropdown-value = 'FIRST CLASS'.
+  APPEND ls_dropdown TO lt_dropdown.
+
+  CLEAR : ls_dropdown.
+  ls_dropdown-handle = 3.
+  ls_dropdown-value = 'ÖN'.
+  APPEND ls_dropdown TO lt_dropdown.
+
+  CLEAR : ls_dropdown.
+  ls_dropdown-handle = 3.
+  ls_dropdown-value = 'KANAT'.
+  APPEND ls_dropdown TO lt_dropdown.
+
+  CLEAR : ls_dropdown.
+  ls_dropdown-handle = 3.
+  ls_dropdown-value = 'ARKA'.
+  APPEND ls_dropdown TO lt_dropdown.
+
+  CLEAR : ls_dropdown.
+  ls_dropdown-handle = 4.
+  ls_dropdown-value = 'ÖN'.
+  APPEND ls_dropdown TO lt_dropdown.
+
+  CLEAR : ls_dropdown.
+  ls_dropdown-handle = 4.
+  ls_dropdown-value = 'ARKA'.
+  APPEND ls_dropdown TO lt_dropdown.
+
+  CLEAR : ls_dropdown.
+  ls_dropdown-handle = 5.
+  ls_dropdown-value = 'KANAT'.
+  APPEND ls_dropdown TO lt_dropdown.
+
+  go_alv->set_drop_down_table(
+    EXPORTING
+      it_drop_down       =  lt_dropdown                " Dropdown Table
+*      it_drop_down_alias =                  " ALV Control: Dropdown List Boxes
+  ).
 ENDFORM.

@@ -11,12 +11,16 @@ TYPE-POOLS icon.
 *      END OF gt_scarr.
 
 TYPES : BEGIN OF gty_scarr,
-          durum    TYPE icon_d,
-          carrid   TYPE s_carr_id,
-          carrname TYPE s_carrname,
-          currcode TYPE s_curRcode,
-          url      TYPE s_carrurl,
-          cost     TYPE int4,
+          durum     TYPE icon_d,
+          carrid    TYPE s_carr_id,
+          carrname  TYPE s_carrname,
+          currcode  TYPE s_curRcode,
+          url       TYPE s_carrurl,
+          cost      TYPE int4,
+          location  TYPE char20,
+          seatt     TYPE char20,
+          seatp     TYPE char10,
+          dd_handle TYPE int4,
         END OF gty_scarr.
 
 DATA : gs_cell_color TYPE lvc_s_scol.
