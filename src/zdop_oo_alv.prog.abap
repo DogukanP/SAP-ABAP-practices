@@ -6,6 +6,7 @@
 REPORT zdop_oo_alv.
 
 INCLUDE zdop_oo_alv_top.
+INCLUDE zdop_oo_alv_c01.
 INCLUDE zdop_oo_alv_f01.
 INCLUDE zdop_oo_alv_i01.
 INCLUDE zdop_oo_alv_o01.

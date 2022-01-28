@@ -19,9 +19,45 @@ FORM show_alv .
       EXPORTING
         container_name = 'CC_ALV'.
 
+    CREATE OBJECT go_spli
+      EXPORTING
+        parent  = go_cont                   " Parent Container
+        rows    = 2                   " Number of Rows to be displayed
+        columns = 1.                  " Number of Columns to be Displayed
+
+    CALL METHOD go_spli->get_container
+      EXPORTING
+        row       = 1              " Row
+        column    = 1              " Column
+      RECEIVING
+        container = go_sub1.            " Container
+
+    CALL METHOD go_spli->get_container
+      EXPORTING
+        row       = 2              " Row
+        column    = 1             " Column
+      RECEIVING
+        container = go_sub2.            " Container
+
+
+    CALL METHOD go_spli->set_row_height
+      EXPORTING
+        id     = 1             " Row ID
+        height = 15.            " Height
+
+    CREATE OBJECT go_docu
+      EXPORTING
+        style = 'ALV_GIRD'.             " Adjusting to the Style of a Particular GUI Environment
+
+
     CREATE OBJECT go_alv
       EXPORTING
-        i_parent = go_cont.
+        i_parent = go_sub2.
+
+
+    CREATE OBJECT go_event_receiver.
+
+    SET HANDLER go_event_receiver->handle_top_of_page FOR go_alv.
 
     PERFORM set_dropdown.
 
@@ -41,6 +77,11 @@ FORM show_alv .
 *   MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
 *     WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
     ENDIF.
+
+    CALL METHOD go_alv->list_processing_events
+      EXPORTING
+        i_event_name = 'TOP_OF_PAGE'                " Event Name List Processing
+        i_dyndoc_id  = go_docu.
 
     CALL METHOD go_alv->register_edit_event
       EXPORTING

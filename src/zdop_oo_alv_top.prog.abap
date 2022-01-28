@@ -25,7 +25,7 @@ TYPES : BEGIN OF gty_scarr,
         END OF gty_scarr.
 
 DATA : gs_cell_color TYPE lvc_s_scol,
-       gs_cellstyle TYPE lvc_s_styl.
+       gs_cellstyle  TYPE lvc_s_styl.
 
 DATA : go_alv  TYPE REF TO cl_gui_alv_grid,
        go_cont TYPE REF TO cl_gui_custom_container.
@@ -40,3 +40,15 @@ DATA : gs_layout TYPE lvc_s_layo.
 
 FIELD-SYMBOLS : <gfs_fcat>  TYPE lvc_s_fcat,
                 <gfs_scarr> TYPE gty_scarr.
+
+*top of page için tanımlamalar
+
+DATA : go_spli TYPE REF TO cl_gui_splitter_container,
+       go_sub1 TYPE REF TO cl_gui_container,
+       go_sub2 TYPE REF TO cl_gui_container.
+
+DATA : go_docu TYPE REF TO cl_dd_document.
+
+
+CLASS cl_event_receiver DEFINITION DEFERRED.
+DATA : go_event_receiver TYPE REF TO cl_event_receiver.
