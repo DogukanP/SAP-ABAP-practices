@@ -60,6 +60,7 @@ FORM show_alv .
     SET HANDLER go_event_receiver->handle_top_of_page FOR go_alv.
     SET HANDLER go_event_receiver->handle_hotspot_click FOR go_alv.
     SET HANDLER go_event_receiver->handle_double_click FOR go_alv.
+    SET HANDLER go_event_receiver->handle_data_changed FOR go_alv.
 
 
     PERFORM set_dropdown.
@@ -180,6 +181,7 @@ FORM set_fcat .
   gs_fcat-scrtext_m = 'HAVAYOLU ADI'.
   gs_fcat-ref_table = 'SCARR'.
   gs_fcat-ref_table = 'CARRNAME'.
+  gs_fcat-edit = 'X'.
   APPEND gs_fcat TO gt_fcat.
 
   CLEAR : gs_fcat.
@@ -191,6 +193,7 @@ FORM set_fcat .
   gs_fcat-fieldname = 'URL'.
   gs_fcat-scrtext_m = 'HAVAYOLU URL'.
   gs_fcat-col_opt = abap_true.
+  gs_fcat-edit = 'X'.
   APPEND gs_fcat TO gt_fcat.
 
   CLEAR : gs_fcat.
