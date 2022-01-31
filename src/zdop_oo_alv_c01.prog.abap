@@ -41,6 +41,16 @@ CLASS cl_event_receiver DEFINITION.
       IMPORTING
         es_col_id
         es_row_no.
+    METHODS handle_toolbar
+      FOR EVENT toolbar OF cl_gui_alv_grid
+      IMPORTING
+        e_object
+        e_interactive.
+    METHODS handle_user_command
+      FOR EVENT user_command OF cl_gui_alv_grid
+      IMPORTING
+        e_ucomm.
+
 ENDCLASS.
 
 CLASS cl_event_receiver IMPLEMENTATION.
@@ -163,5 +173,22 @@ CLASS cl_event_receiver IMPLEMENTATION.
           MESSAGE lv_mess TYPE 'I'.
       ENDCASE.
     ENDIF.
+  ENDMETHOD.
+  METHOD handle_toolbar.
+    DATA : ls_toolbar TYPE stb_button.
+
+    CLEAR : ls_toolbar.
+    ls_toolbar-function = 'DELETE'.
+    ls_toolbar-text = 'SİLME'.
+    ls_toolbar-icon = '@11@'.
+    ls_toolbar-quickinfo = 'SİLME İŞLEMİ'.
+
+    APPEND ls_toolbar TO e_object->mt_toolbar.
+  ENDMETHOD.
+  METHOD handle_user_command.
+    CASE E_UCOMM.
+      WHEN 'DELETE'.
+        MESSAGE 'SİLME BUTONUNA BASILDI' TYPE 'I'.
+    ENDCASE.
   ENDMETHOD.
 ENDCLASS.

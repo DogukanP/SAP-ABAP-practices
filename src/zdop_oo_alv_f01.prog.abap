@@ -13,6 +13,7 @@ FORM show_alv .
 
   PERFORM set_fcat.
   PERFORM set_layout.
+  PERFORM set_excluding.
 
   IF go_alv IS INITIAL.
     CREATE OBJECT go_cont
@@ -57,12 +58,15 @@ FORM show_alv .
 
     CREATE OBJECT go_event_receiver.
 
-    SET HANDLER go_event_receiver->handle_top_of_page FOR go_alv.
+    SET HANDLER go_event_receiver->handle_top_of_page   FOR go_alv.
     SET HANDLER go_event_receiver->handle_hotspot_click FOR go_alv.
-    SET HANDLER go_event_receiver->handle_double_click FOR go_alv.
-    SET HANDLER go_event_receiver->handle_data_changed FOR go_alv.
-    SET HANDLER go_event_receiver->handle_onf4_changed FOR go_alv.
-    SET HANDLER go_event_receiver->handle_button_click FOR go_alv.
+    SET HANDLER go_event_receiver->handle_double_click  FOR go_alv.
+    SET HANDLER go_event_receiver->handle_data_changed  FOR go_alv.
+    SET HANDLER go_event_receiver->handle_onf4_changed  FOR go_alv.
+    SET HANDLER go_event_receiver->handle_button_click  FOR go_alv.
+    SET HANDLER go_event_receiver->handle_toolbar       FOR go_alv.
+    SET HANDLER go_event_receiver->handle_user_command  FOR go_alv.
+
 
 
     PERFORM set_dropdown.
@@ -71,6 +75,7 @@ FORM show_alv .
       EXPORTING
 *       i_structure_name              = 'SCARR'            " Internal Output Table Structure Name
         is_layout                     = gs_layout
+        it_toolbar_excluding          = gt_excluding
       CHANGING
         it_outtab                     = gt_scarr
         it_fieldcatalog               = gt_fcat
@@ -262,7 +267,7 @@ FORM set_layout .
   CLEAR : gs_layout.
   gs_layout-cwidth_opt = 'X'.
 *  gs_layout-edit = 'X'.
-  gs_layout-no_toolbar = 'X'.
+*  gs_layout-no_toolbar = 'X'.
 *  gs_layout-zebra = 'X'.
   gs_layout-stylefname = 'CELLSTYLE'.
 ENDFORM.
@@ -392,4 +397,19 @@ FORM register_f4 .
   CALL METHOD go_alv->register_f4_for_fields
     EXPORTING
       it_f4 = lt_f4.                  " F4 Fields
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_excluding
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_excluding .
+  CLEAR : gv_excluding.
+  gv_excluding = cl_gui_alv_grid=>mc_fc_detail.
+  APPEND gv_excluding TO gt_excluding.
+  gv_excluding = cl_gui_alv_grid=>mc_fc_find.
+  APPEND gv_excluding TO gt_excluding.
 ENDFORM.

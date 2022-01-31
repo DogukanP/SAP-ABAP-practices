@@ -37,6 +37,9 @@ DATA : gt_scarr TYPE TABLE OF gty_scarr,
 DATA : gt_fcat TYPE lvc_t_fcat,
        gs_fcat TYPE lvc_s_fcat.
 
+DATA : GT_EXCLUDING TYPE UI_FUNCTIONS,
+       GV_EXCLUDING TYPE UI_FUNC.
+
 DATA : gs_layout TYPE lvc_s_layo.
 
 FIELD-SYMBOLS : <gfs_fcat>  TYPE lvc_s_fcat,
