@@ -43,6 +43,9 @@ DATA : gt_excluding TYPE ui_functions,
 DATA : gt_sort TYPE lvc_t_sort,
        gs_sort TYPE lvc_s_sort.
 
+DATA : gt_filter TYPE lvc_t_filt,
+       gs_filter TYPE lvc_s_filt.
+
 DATA : gs_layout TYPE lvc_s_layo.
 
 FIELD-SYMBOLS : <gfs_fcat>  TYPE lvc_s_fcat,

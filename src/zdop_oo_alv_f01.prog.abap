@@ -15,6 +15,7 @@ FORM show_alv .
   PERFORM set_layout.
   PERFORM set_excluding.
   PERFORM set_sort.
+  PERFORM set_filter.
 
   IF go_alv IS INITIAL.
     CREATE OBJECT go_cont
@@ -81,6 +82,7 @@ FORM show_alv .
         it_outtab                     = gt_scarr
         it_fieldcatalog               = gt_fcat
         it_sort                       = gt_sort
+        it_filter                     = gt_filter
       EXCEPTIONS
         invalid_parameter_combination = 1                " Wrong Parameter
         program_error                 = 2                " Program Errors
@@ -429,4 +431,22 @@ FORM set_sort .
   gs_sort-fieldname = 'CURRCODE'.
   gs_sort-down = 'X'.
   APPEND gs_sort TO gt_sort.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_filter
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_filter.
+  CLEAR : gs_filter.
+  gs_filter-tabname = 'GT_SCARR'.
+  gs_filter-fieldname = 'CURRCODE'.
+  gs_filter-sign = 'I'.
+  gs_filter-option = 'EQ'.
+  gs_filter-low = 'USD'.
+*  GS_FILTER-HIGH = .
+  APPEND gs_filter TO gt_filter.
 ENDFORM.
