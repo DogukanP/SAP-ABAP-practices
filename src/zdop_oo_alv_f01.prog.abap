@@ -15,7 +15,7 @@ FORM show_alv .
   PERFORM set_layout.
   PERFORM set_excluding.
   PERFORM set_sort.
-  PERFORM set_filter.
+*  PERFORM set_filter.
 
   IF go_alv IS INITIAL.
     CREATE OBJECT go_cont
@@ -73,11 +73,20 @@ FORM show_alv .
 
     PERFORM set_dropdown.
 
+*    I_SAVE  = ''  --> DISPLAY VARIANT CANNOT BE SAVED.
+*    I_SAVE  = 'X' --> STANDARD SAVE MODE.
+*    I_SAVE  = 'U' --> USER-SPECIFIC SAVE MODE.
+*    I_SAVE  = 'A' --> STANDARD AND USER-SPECIFIC SAVE MODE
+
+    gs_variant-report = sy-repid.
+
     CALL METHOD go_alv->set_table_for_first_display
       EXPORTING
 *       i_structure_name              = 'SCARR'            " Internal Output Table Structure Name
         is_layout                     = gs_layout
         it_toolbar_excluding          = gt_excluding
+        is_variant                    = gs_variant
+        i_save                        = 'A'
       CHANGING
         it_outtab                     = gt_scarr
         it_fieldcatalog               = gt_fcat

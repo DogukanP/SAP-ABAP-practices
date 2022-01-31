@@ -48,6 +48,8 @@ DATA : gt_filter TYPE lvc_t_filt,
 
 DATA : gs_layout TYPE lvc_s_layo.
 
+DATA : gs_variant TYPE disvariant.
+
 FIELD-SYMBOLS : <gfs_fcat>  TYPE lvc_s_fcat,
                 <gfs_scarr> TYPE gty_scarr.
 
