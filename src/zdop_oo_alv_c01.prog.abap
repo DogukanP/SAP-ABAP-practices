@@ -67,7 +67,15 @@ CLASS cl_event_receiver IMPLEMENTATION.
 
   ENDMETHOD.
   METHOD handle_hotspot_click.
-    BREAK-POINT.
+    data : lv_mess type char200.
+    READ TABLE gt_scarr INTO gs_scarr index e_row_id-index.
+    IF sy-subrc eq 0.
+      CASE e_column_id.
+        WHEN 'CARRID'.
+          CONCATENATE 'TIKLANAN KOLON' E_COLUMN_ID 'DEĞERİ' GS_SCARR-carrid INTO LV_MESS SEPARATED BY SPACE.
+          MESSAGE LV_MESS TYPE 'I'.
+      ENDCASE.
+    ENDIF.
   ENDMETHOD.
   METHOD handle_double_click.
     BREAK-POINT.

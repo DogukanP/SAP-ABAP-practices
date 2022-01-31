@@ -58,6 +58,7 @@ FORM show_alv .
     CREATE OBJECT go_event_receiver.
 
     SET HANDLER go_event_receiver->handle_top_of_page FOR go_alv.
+    SET HANDLER go_event_receiver->handle_hotspot_click FOR go_alv.
 
     PERFORM set_dropdown.
 
@@ -222,6 +223,12 @@ FORM set_fcat .
   gs_fcat-edit = abap_true.
   gs_fcat-drdn_field = 'DD_HANDLE'.
   APPEND gs_fcat TO gt_fcat.
+
+  LOOP AT gt_fcat ASSIGNING <gfs_fcat>.
+    IF <gfs_fcat>-fieldname EQ 'CARRID'.
+      <gfs_fcat>-hotspot = abap_true.
+    ENDIF.
+  ENDLOOP.
 ENDFORM.
 *&---------------------------------------------------------------------*
 *& Form set_layout
