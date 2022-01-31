@@ -48,7 +48,8 @@ DATA : gt_filter TYPE lvc_t_filt,
 
 DATA : gs_layout TYPE lvc_s_layo.
 
-DATA : gs_variant TYPE disvariant.
+DATA : gs_variant     TYPE disvariant,
+       gs_variant_tmp TYPE disvariant.
 
 FIELD-SYMBOLS : <gfs_fcat>  TYPE lvc_s_fcat,
                 <gfs_scarr> TYPE gty_scarr.
@@ -64,3 +65,5 @@ DATA : go_docu TYPE REF TO cl_dd_document.
 
 CLASS cl_event_receiver DEFINITION DEFERRED.
 DATA : go_event_receiver TYPE REF TO cl_event_receiver.
+
+PARAMETERS : p_vari TYPE disvariant-variant.

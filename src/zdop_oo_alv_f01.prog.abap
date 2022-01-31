@@ -79,6 +79,7 @@ FORM show_alv .
 *    I_SAVE  = 'A' --> STANDARD AND USER-SPECIFIC SAVE MODE
 
     gs_variant-report = sy-repid.
+    gs_variant-variant = p_vari.
 
     CALL METHOD go_alv->set_table_for_first_display
       EXPORTING
@@ -458,4 +459,59 @@ FORM set_filter.
   gs_filter-low = 'USD'.
 *  GS_FILTER-HIGH = .
   APPEND gs_filter TO gt_filter.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form variant
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM variant .
+  gs_variant_tmp-report = sy-repid.
+
+  CALL FUNCTION 'LVC_VARIANT_DEFAULT_GET'
+    EXPORTING
+      i_save        = 'A'
+    CHANGING
+      cs_variant    = gs_variant_tmp
+    EXCEPTIONS
+      wrong_input   = 1
+      not_found     = 2
+      program_error = 3
+      OTHERS        = 4.
+  IF sy-subrc EQ 0.
+    p_vari = gs_variant_tmp-variant.
+  ENDIF.
+
+
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form VARIANT_SEARC_HELP
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM variant_searc_help .
+  CALL FUNCTION 'LVC_VARIANT_F4'
+    EXPORTING
+      is_variant = gs_variant_tmp
+*     IT_DEFAULT_FIELDCAT       =
+      i_save     = 'A'
+    IMPORTING
+*     E_EXIT     =
+      es_variant = gs_variant_tmp
+*   EXCEPTIONS
+*     NOT_FOUND  = 1
+*     PROGRAM_ERROR             = 2
+*     OTHERS     = 3
+    .
+  IF sy-subrc EQ 0.
+    p_vari = gs_variant_tmp-variant.
+  ENDIF.
+
 ENDFORM.
