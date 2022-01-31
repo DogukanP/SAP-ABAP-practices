@@ -59,6 +59,8 @@ FORM show_alv .
 
     SET HANDLER go_event_receiver->handle_top_of_page FOR go_alv.
     SET HANDLER go_event_receiver->handle_hotspot_click FOR go_alv.
+    SET HANDLER go_event_receiver->handle_double_click FOR go_alv.
+
 
     PERFORM set_dropdown.
 
