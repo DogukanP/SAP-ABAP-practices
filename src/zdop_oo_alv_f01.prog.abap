@@ -62,6 +62,7 @@ FORM show_alv .
     SET HANDLER go_event_receiver->handle_double_click FOR go_alv.
     SET HANDLER go_event_receiver->handle_data_changed FOR go_alv.
     SET HANDLER go_event_receiver->handle_onf4_changed FOR go_alv.
+    SET HANDLER go_event_receiver->handle_button_click FOR go_alv.
 
 
     PERFORM set_dropdown.
@@ -97,7 +98,7 @@ FORM show_alv .
     ENDIF.
 
 
-  PERFORM register_f4.
+    PERFORM register_f4.
   ELSE.
     CALL METHOD go_alv->refresh_table_display.
   ENDIF.
@@ -157,6 +158,8 @@ FORM get_data .
 *        gs_cellstyle-style = '00000002'.
 *        APPEND gs_cellstyle TO <gfs_scarr>-cellstyle.
 *    ENDCASE.
+
+    <gfs_scarr>-delete = 'SİL'.
 
     gs_cellstyle-fieldname = 'URL'.
     gs_cellstyle-style = lv_numc_c.
@@ -233,6 +236,12 @@ FORM set_fcat .
   gs_fcat-scrtext_m = 'KOLTUK POZİSYONU'.
   gs_fcat-edit = abap_true.
   gs_fcat-drdn_field = 'DD_HANDLE'.
+  APPEND gs_fcat TO gt_fcat.
+
+  CLEAR : gs_fcat.
+  gs_fcat-fieldname = 'DELETE'.
+  gs_fcat-scrtext_m = 'SİL'.
+  gs_fcat-style = cl_gui_alv_grid=>mc_style_button.
   APPEND gs_fcat TO gt_fcat.
 
   LOOP AT gt_fcat ASSIGNING <gfs_fcat>.
@@ -375,10 +384,10 @@ FORM register_f4 .
   DATA : lt_f4 TYPE lvc_t_f4,
          ls_f4 TYPE lvc_s_f4.
 
-  CLEAR : LS_F4.
-  LS_F4-fieldname = 'CARRNAME'.
-  LS_F4-register = 'X'.
-  APPEND LS_F4 TO LT_F4.
+  CLEAR : ls_f4.
+  ls_f4-fieldname = 'CARRNAME'.
+  ls_f4-register = 'X'.
+  APPEND ls_f4 TO lt_f4.
 
   CALL METHOD go_alv->register_f4_for_fields
     EXPORTING

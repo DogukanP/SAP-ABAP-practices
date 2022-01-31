@@ -22,6 +22,7 @@ TYPES : BEGIN OF gty_scarr,
           seatp     TYPE char10,
           dd_handle TYPE int4,
           cellstyle TYPE lvc_t_styl,
+          delete    TYPE char20,
         END OF gty_scarr.
 
 DATA : gs_cell_color TYPE lvc_s_scol,

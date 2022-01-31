@@ -36,6 +36,11 @@ CLASS cl_event_receiver DEFINITION.
         er_event_data
         et_bad_cells
         e_display.
+    METHODS handle_button_click
+      FOR EVENT button_click OF cl_gui_alv_grid
+      IMPORTING
+        es_col_id
+        es_row_no.
 ENDCLASS.
 
 CLASS cl_event_receiver IMPLEMENTATION.
@@ -147,5 +152,16 @@ CLASS cl_event_receiver IMPLEMENTATION.
       ENDIF.
     ENDIF.
     er_event_data->m_event_handled = 'X'.
+  ENDMETHOD.
+  METHOD handle_button_click.
+    DATA : lv_mess TYPE char200.
+    READ TABLE gt_scarr INTO gs_scarr INDEX es_row_no-row_id.
+    IF sy-subrc EQ 0.
+      CASE es_col_id-fieldname.
+        WHEN 'DELETE'.
+          CONCATENATE es_col_id-fieldname ',' gs_scarr-carrid gs_scarr-carrname INTO lv_mess SEPARATED BY space.
+          MESSAGE lv_mess TYPE 'I'.
+      ENDCASE.
+    ENDIF.
   ENDMETHOD.
 ENDCLASS.
