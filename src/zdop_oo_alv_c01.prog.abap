@@ -101,6 +101,51 @@ CLASS cl_event_receiver IMPLEMENTATION.
     ENDLOOP.
   ENDMETHOD.
   METHOD handle_onf4_changed.
-    BREAK-POINT.
+    TYPES : BEGIN OF lty_value_tab,
+              carrname TYPE s_carrname,
+            END OF lty_value_tab.
+
+    DATA : lt_return_tab TYPE TABLE OF ddshretval,
+           ls_return_tab TYPE ddshretval,
+           lt_value_tab  TYPE TABLE OF lty_value_tab,
+           ls_value_tab  TYPE  lty_value_tab.
+
+    CLEAR : ls_value_tab.
+    ls_value_tab-carrname = 'UÇUŞ 1'.
+    APPEND ls_value_tab TO lt_value_tab.
+
+    CLEAR : ls_value_tab.
+    ls_value_tab-carrname = 'UÇUŞ 2'.
+    APPEND ls_value_tab TO lt_value_tab.
+
+    CLEAR : ls_value_tab.
+    ls_value_tab-carrname = 'UÇUŞ 3'.
+    APPEND ls_value_tab TO lt_value_tab.
+
+    CALL FUNCTION 'F4IF_INT_TABLE_VALUE_REQUEST'
+      EXPORTING
+        retfield        = 'CARRNAME'
+        window_title    = 'CARRNAME F4'
+        value_org       = 'S'
+      TABLES
+        value_tab       = lt_value_tab
+        return_tab      = lt_return_tab
+      EXCEPTIONS
+        parameter_error = 1
+        no_values_found = 2
+        OTHERS          = 3.
+    IF sy-subrc <> 0.
+* Implement suitable error handling here
+    ENDIF.
+
+    READ TABLE lt_return_tab INTO ls_return_tab WITH KEY fieldname = 'F0001'.
+    IF sy-subrc EQ 0.
+      READ TABLE gt_scarr ASSIGNING <gfs_scarr> INDEX es_row_no-row_id.
+      IF sy-subrc EQ 0.
+        <gfs_scarr>-carrname = ls_return_tab-fieldval.
+        go_alv->refresh_table_display( ).
+      ENDIF.
+    ENDIF.
+    er_event_data->m_event_handled = 'X'.
   ENDMETHOD.
 ENDCLASS.

@@ -61,6 +61,7 @@ FORM show_alv .
     SET HANDLER go_event_receiver->handle_hotspot_click FOR go_alv.
     SET HANDLER go_event_receiver->handle_double_click FOR go_alv.
     SET HANDLER go_event_receiver->handle_data_changed FOR go_alv.
+    SET HANDLER go_event_receiver->handle_onf4_changed FOR go_alv.
 
 
     PERFORM set_dropdown.
@@ -94,6 +95,9 @@ FORM show_alv .
       MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
         WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
     ENDIF.
+
+
+  PERFORM register_f4.
   ELSE.
     CALL METHOD go_alv->refresh_table_display.
   ENDIF.
@@ -182,6 +186,8 @@ FORM set_fcat .
   gs_fcat-ref_table = 'SCARR'.
   gs_fcat-ref_table = 'CARRNAME'.
   gs_fcat-edit = 'X'.
+  gs_fcat-f4availabl = 'X'.
+  "GS_FCAT-style = cl_gui_alv_grid=>mc_style_f4 . AYNI İŞE YARIYOR
   APPEND gs_fcat TO gt_fcat.
 
   CLEAR : gs_fcat.
@@ -356,4 +362,25 @@ FORM set_dropdown .
       it_drop_down       =  lt_dropdown                " Dropdown Table
 *      it_drop_down_alias =                  " ALV Control: Dropdown List Boxes
   ).
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form register_f4
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM register_f4 .
+  DATA : lt_f4 TYPE lvc_t_f4,
+         ls_f4 TYPE lvc_s_f4.
+
+  CLEAR : LS_F4.
+  LS_F4-fieldname = 'CARRNAME'.
+  LS_F4-register = 'X'.
+  APPEND LS_F4 TO LT_F4.
+
+  CALL METHOD go_alv->register_f4_for_fields
+    EXPORTING
+      it_f4 = lt_f4.                  " F4 Fields
 ENDFORM.
