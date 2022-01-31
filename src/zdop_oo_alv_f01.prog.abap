@@ -14,6 +14,7 @@ FORM show_alv .
   PERFORM set_fcat.
   PERFORM set_layout.
   PERFORM set_excluding.
+  PERFORM set_sort.
 
   IF go_alv IS INITIAL.
     CREATE OBJECT go_cont
@@ -79,6 +80,7 @@ FORM show_alv .
       CHANGING
         it_outtab                     = gt_scarr
         it_fieldcatalog               = gt_fcat
+        it_sort                       = gt_sort
       EXCEPTIONS
         invalid_parameter_combination = 1                " Wrong Parameter
         program_error                 = 2                " Program Errors
@@ -412,4 +414,19 @@ FORM set_excluding .
   APPEND gv_excluding TO gt_excluding.
   gv_excluding = cl_gui_alv_grid=>mc_fc_find.
   APPEND gv_excluding TO gt_excluding.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_sort
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_sort .
+  CLEAR : gs_sort.
+  gs_sort-spos = 1.
+  gs_sort-fieldname = 'CURRCODE'.
+  gs_sort-down = 'X'.
+  APPEND gs_sort TO gt_sort.
 ENDFORM.

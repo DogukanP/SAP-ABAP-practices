@@ -37,8 +37,11 @@ DATA : gt_scarr TYPE TABLE OF gty_scarr,
 DATA : gt_fcat TYPE lvc_t_fcat,
        gs_fcat TYPE lvc_s_fcat.
 
-DATA : GT_EXCLUDING TYPE UI_FUNCTIONS,
-       GV_EXCLUDING TYPE UI_FUNC.
+DATA : gt_excluding TYPE ui_functions,
+       gv_excluding TYPE ui_func.
+
+DATA : gt_sort TYPE lvc_t_sort,
+       gs_sort TYPE lvc_s_sort.
 
 DATA : gs_layout TYPE lvc_s_layo.
 
